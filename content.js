@@ -1,45 +1,50 @@
-const forbiddenTitles = [
-  "guess the song", 
-  "smash or pass", 
-  "save one song", 
-  "pick one",
-  "would you rather",
-  "manifest",
+const forbiddenGroups = [
+  ["guess", "song"],     // Matches "guess the 100 songs", "guess that song", etc.
+  ["smash", "pass"],    // Matches "smash or pass", "smashing or passing"
+  ["save", "one", "song"],
+  ["pick", "one"],
+  ["would", "you", "rather"]
+];
+
+const nuclearKeywords = [
+  "blackpink",
+  "bts",
+  "quiz",
+  "challenge",
+  "manifest"
 ];
 
 function checkAndBlock() {
-  // YouTube's title element for the main video player
-  const videoTitleElement = document.querySelector("#full-bleed-container h1.ytd-watch-metadata, #title h1.ytd-watch-metadata");
+  const titleEl = document.querySelector("#full-bleed-container h1.ytd-watch-metadata, #title h1.ytd-watch-metadata");
   
-  if (videoTitleElement) {
-    const titleText = videoTitleElement.innerText.toLowerCase();
-    
-    // Check if any forbidden phrase is in the title
-    const shouldBlock = forbiddenTitles.some(phrase => titleText.includes(phrase));
-    
-    if (shouldBlock) {
+  if (titleEl) {
+    const titleText = titleEl.innerText.toLowerCase();
+
+    // 1. Check word groups (matches even if words are separated)
+    const matchesGroup = forbiddenGroups.some(group => 
+      group.every(word => titleText.includes(word))
+    );
+
+    // 2. Check single "nuclear" keywords
+    const matchesKeyword = nuclearKeywords.some(word => 
+      titleText.includes(word)
+    );
+
+    if (matchesGroup || matchesKeyword) {
       blockVideo();
     }
   }
 }
 
 function blockVideo() {
-  // Find the video player element
   const player = document.querySelector("#movie_player");
   if (player && !player.classList.contains("blocked-content")) {
     player.classList.add("blocked-content");
-    
-    // Optional: Stop the video
     const video = player.querySelector("video");
     if (video) video.pause();
-    
-    console.log("Content blocked due to title match.");
+    console.log("Classroom brain-rot blocked.");
   }
 }
 
-// Observe changes in the page (necessary for YouTube's SPA navigation)
-const observer = new MutationObserver(() => {
-  checkAndBlock();
-});
-
+const observer = new MutationObserver(() => checkAndBlock());
 observer.observe(document.body, { childList: true, subtree: true });
