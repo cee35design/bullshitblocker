@@ -1,16 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "bullshit blocker",
-  "version": "1.4",
-  "permissions": ["storage"],
+  "name": "Bullshit Blocker",
+  "version": "1.5",
+  "description": "kpop sucks",
+  "action": {},
   "content_scripts": [
     {
-      "matches": [
-        "https://www.youtube.com/*",
-        "https://m.youtube.com/*"
-      ],
-      "js": ["content.js"],
-      "css": ["styles.css"]
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content.js"]
     }
   ]
-}   
+}

@@ -1,10 +1,7 @@
-/* Prevent the user from scrolling past the image */
 body.blocked-content {
   overflow: hidden !important;
-  height: 100vh !important;
 }
 
-/* The Full-Screen Overlay */
 body.blocked-content::after {
   content: "";
   position: fixed;
@@ -12,17 +9,18 @@ body.blocked-content::after {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #000; /* Black background for any gaps */
+  background-color: #000;
   background-image: url('https://yt3.googleusercontent.com/eVCPXEx45wBGH5hAf3-AS1TDdD5Yy50dwMQhwvjbcXVXSPCDhnhmyBZ4qmtuHIbkR7lhlY7szQ=s900-c-k-c0x00ffffff-no-rj'); 
-  background-size: contain; /* Shows the whole image without cropping */
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  z-index: 2147483647 !important; /* Highest possible z-index to stay on top */
-  pointer-events: all; /* Blocks clicks to the video underneath */
+  z-index: 2147483647 !important;
 }
 
-/* Hide the actual page content so nothing "peeks" through */
-body.blocked-content #content, 
-body.blocked-content #masthead-container {
+/* Force hide the entire video player area */
+body.blocked-content #ytd-player,
+body.blocked-content .html5-video-player,
+body.blocked-content .video-stream {
+  display: none !important;
   visibility: hidden !important;
 }

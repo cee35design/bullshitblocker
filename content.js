@@ -1,63 +1,59 @@
-const forbiddenGroups = [
-  ["guess", "song"],     // Matches "guess the 100 songs", "guess that song", etc.
-  ["smash", "pass"],    // Matches "smash or pass", "smashing or passing"
-  ["save", "one", "song"],
-  ["pick", "one"],
-  ["would", "you", "rather"]
+// 1. The List (Must be at the top!)
+const brainRotTerms = [
+  "guess the song",
+  "guess the songs",
+  "smash or pass",
+  "save one song",
+  "pick one",
+  "would you rather",
+  "bts", 
+  "blackpink", 
+  "twice", 
+  "newjeans", 
+  "ive", 
+  "aespa", 
+  "lesserafim", 
+  "stray kids", 
+  "skz", 
+  "quiz", 
+  "challenge", 
+  "manifest", 
+  "kpop", 
+  "fancam",
+  "katseye",
 ];
 
-const nuclearKeywords = [
-  "blackpink",
-  "bts",
-  "quiz",
-  "challenge",
-  "manifest"
-  // The Legends / Massive Fandoms
-  ,"bts", "blackpink", "twice", "exo", "seventeen", "stray kids", "skz", "got7", "red velvet", "katseye", "meovv", "kiss of life", "riize", "boynextdoor", "tws", "zerobaseone", "zb1", "kiiikiii", "cortis", "hearts2hearts",
+// 2. The Nuke Function
+function nukeTab() {
+  const judgmentImage = "https://yt3.googleusercontent.com/eVCPXEx45wBGH5hAf3-AS1TDdD5Yy50dwMQhwvjbcXVXSPCDhnhmyBZ4qmtuHIbkR7lhlY7szQ=s900-c-k-c0x00ffffff-no-rj";
   
-  // The Current Gen Leaders
-  "newjeans", "ive", "aespa", "lesserafim", "le sserafim", "itzy", "nmixx", "enhypen", "txt", "tomorrow x together", "ateez", "treasure",
-  
-  // The Rising / Newest Groups (2025-2026 Trends)
-  "illit", "babymonster", "katseye", "meovv", "kiss of life", "riize", "boynextdoor", "tws", "zerobaseone", "zb1", "kiiikiii", "cortis", "hearts2hearts",
+  console.log("Brain rot detected. Redirecting...");
+  window.location.replace(judgmentImage);
+}
 
-  // General Brain-Rot Terms
-  "quiz", "challenge", "manifest", "kpop", "k-pop", "bias", "fancam"
-];
+// 3. The Logic
 function checkAndBlock() {
-  const titleEl = document.querySelector("#full-bleed-container h1.ytd-watch-metadata, #title h1.ytd-watch-metadata");
+  const titleEl = document.querySelector("#full-bleed-container h1.ytd-watch-metadata, #title h1.ytd-watch-metadata, title");
   
   if (titleEl) {
     const titleText = titleEl.innerText.toLowerCase();
 
-    const matchesGroup = forbiddenGroups.some(group => 
-      group.every(word => titleText.includes(word))
-    );
-
-    const matchesKeyword = nuclearKeywords.some(word => 
-      titleText.includes(word)
-    );
-
-    if (matchesGroup || matchesKeyword) {
-      blockEverything();
+    // Simple loop that won't crash
+    for (let i = 0; i < brainRotTerms.length; i++) {
+      if (titleText.includes(brainRotTerms[i].toLowerCase())) {
+        nukeTab();
+        break; 
+      }
     }
   }
 }
 
-function blockEverything() {
-  if (!document.body.classList.contains("blocked-content")) {
-    document.body.classList.add("blocked-content");
-    
-    // Find the video and kill the volume/playback
-    const video = document.querySelector("video");
-    if (video) {
-      video.pause();
-      video.muted = true; 
-      video.currentTime = 0; // Reset it so they can't hear a split second
-    }
-    console.log("Full-screen judgment active.");
-  }
-}
+// 4. The Triggers
+// Check every 500ms
+setInterval(checkAndBlock, 500);
 
-const observer = new MutationObserver(() => checkAndBlock());
+// Also check when the page content changes
+const observer = new MutationObserver(() => {
+  checkAndBlock();
+});
 observer.observe(document.body, { childList: true, subtree: true });
