@@ -5,7 +5,7 @@
 tired of those weird "smash or pass", "guess the song" vids?? kpop too?? well guess what, that's exactly what this extension is for
 
 ## installation
-because i do not posess the 5$ required for a google chrome webstore account, we'll have to do it manually
+because i do not possess the 5$ required for a google chrome webstore account, we'll have to do it manually
 
 ### step 1
 download the `.crx` file from releases
